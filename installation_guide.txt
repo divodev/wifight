@@ -1,0 +1,539 @@
+# 📦 WiFight - Complete Installation Guide
+
+## 📋 Table of Contents
+1. [System Requirements](#system-requirements)
+2. [XAMPP Installation](#xampp-installation)
+3. [Project Setup](#project-setup)
+4. [Database Configuration](#database-configuration)
+5. [Backend Configuration](#backend-configuration)
+6. [Testing](#testing)
+7. [Troubleshooting](#troubleshooting)
+
+## 🖥️ System Requirements
+
+### Minimum Requirements
+- **OS**: Windows 10/11, macOS 10.15+, or Linux
+- **RAM**: 4GB minimum, 8GB recommended
+- **Disk Space**: 2GB free space
+- **Browser**: Chrome, Firefox, Safari, or Edge (latest versions)
+
+### Software Requirements
+- **XAMPP**: 8.1.x or higher
+  - PHP 8.1+
+  - MySQL 8.0+
+  - Apache 2.4+
+- **TP-Link Omada Controller**: v5.x (optional for initial setup)
+
+## 🚀 XAMPP Installation
+
+### Windows
+
+1. **Download XAMPP**
+   - Visit: https://www.apachefriends.org/download.html
+   - Download XAMPP for Windows (PHP 8.1+)
+
+2. **Install XAMPP**
+   ```
+   - Run the installer
+   - Select components: Apache, MySQL, PHP, phpMyAdmin
+   - Install to: C:\xampp (recommended)
+   - Complete installation
+   ```
+
+3. **Start Services**
+   ```
+   - Open XAMPP Control Panel
+   - Click "Start" for Apache
+   - Click "Start" for MySQL
+   - Verify both show "Running" status
+   ```
+
+4. **Test Installation**
+   - Open browser
+   - Visit: http://localhost
+   - You should see XAMPP dashboard
+
+### macOS
+
+1. **Download XAMPP**
+   - Visit: https://www.apachefriends.org/download.html
+   - Download XAMPP for macOS
+
+2. **Install XAMPP**
+   ```bash
+   # Mount the DMG file
+   # Drag XAMPP folder to Applications
+   # Open XAMPP from Applications
+   ```
+
+3. **Configure Permissions**
+   ```bash
+   sudo chmod -R 755 /Applications/XAMPP
+   ```
+
+## 📁 Project Setup
+
+### Step 1: Extract Files
+
+```bash
+# Navigate to htdocs
+cd C:\xampp\htdocs  # Windows
+cd /Applications/XAMPP/htdocs  # macOS
+
+# Extract WiFight package
+# The folder structure should be:
+# htdocs/wifight/
+```
+
+### Step 2: Verify Directory Structure
+
+Ensure all folders exist:
+```
+wifight/
+├── backend/
+│   ├── api/
+│   ├── config/
+│   ├── models/
+│   ├── services/
+│   └── utils/
+├── frontend/
+│   ├── css/
+│   ├── js/
+│   └── index.html
+├── portal/
+│   ├── css/
+│   ├── js/
+│   └── index.html
+├── database/
+│   └── schema.sql
+└── storage/
+    ├── logs/
+    ├── uploads/
+    └── exports/
+```
+
+### Step 3: Set Permissions
+
+**Windows:**
+- Right-click on `storage` folder
+- Properties → Security
+- Grant full control to Users
+
+**macOS/Linux:**
+```bash
+chmod -R 755 storage/
+chmod -R 755 database/backups/
+```
+
+## 🗄️ Database Configuration
+
+### Step 1: Access phpMyAdmin
+
+1. Open browser
+2. Visit: http://localhost/phpmyadmin
+3. Login (default: root, no password)
+
+### Step 2: Create Database
+
+```sql
+-- Click "New" in left sidebar
+-- Database name: wifight_db
+-- Collation: utf8mb4_unicode_ci
+-- Click "Create"
+```
+
+### Step 3: Import Schema
+
+1. Click on `wifight_db` in left sidebar
+2. Click "Import" tab
+3. Click "Choose File"
+4. Select: `C:\xampp\htdocs\wifight\database\schema.sql`
+5. Click "Go"
+6. Wait for success message
+
+### Step 4: Verify Tables
+
+Check these 8 tables were created:
+- ✅ users
+- ✅ locations
+- ✅ controllers
+- ✅ plans
+- ✅ vouchers
+- ✅ sessions
+- ✅ payments
+- ✅ portal_settings
+
+### Step 5: Verify Sample Data
+
+```sql
+-- Check admin user exists
+SELECT * FROM users WHERE email = 'admin@wifight.com';
+
+-- Check plans exist
+SELECT * FROM plans;
+
+-- Should see 5 sample plans
+```
+
+## ⚙️ Backend Configuration
+
+### Step 1: Database Connection
+
+Edit: `backend/config/database.php`
+
+```php
+<?php
+class Database {
+    private $host = "localhost";
+    private $db_name = "wifight_db";
+    private $username = "root";
+    private $password = "";  // Change if you set a password
+    
+    // Rest of the file remains the same
+}
+?>
+```
+
+### Step 2: JWT Secret
+
+Edit: `backend/config/constants.php`
+
+```php
+// IMPORTANT: Change this to a random string
+define('JWT_SECRET', 'your-random-secret-key-here-make-it-long-and-secure');
+
+// Generate a strong secret:
+// 1. Go to: https://randomkeygen.com/
+// 2. Copy a "Fort Knox Password"
+// 3. Replace above
+```
+
+### Step 3: Environment Configuration
+
+```bash
+# Copy example file
+cp .env.example .env
+
+# Edit .env file with your settings
+```
+
+Key settings to update in `.env`:
+```env
+APP_URL=http://localhost/wifight
+DB_HOST=localhost
+DB_DATABASE=wifight_db
+DB_USERNAME=root
+DB_PASSWORD=
+
+JWT_SECRET=your-secret-key-change-in-production
+
+# Add your email settings
+MAIL_HOST=smtp.gmail.com
+MAIL_USERNAME=your-email@gmail.com
+MAIL_PASSWORD=your-app-password
+```
+
+### Step 4: Apache Configuration
+
+Edit: `C:\xampp\apache\conf\httpd.conf`
+
+Find and uncomment (remove #):
+```apache
+LoadModule rewrite_module modules/mod_rewrite.so
+LoadModule headers_module modules/mod_headers.so
+```
+
+Find:
+```apache
+<Directory />
+    AllowOverride None
+```
+
+Change to:
+```apache
+<Directory />
+    AllowOverride All
+```
+
+**Restart Apache** after changes.
+
+### Step 5: PHP Configuration
+
+Edit: `C:\xampp\php\php.ini`
+
+Find and enable:
+```ini
+extension=curl
+extension=mbstring
+extension=openssl
+extension=pdo_mysql
+
+upload_max_filesize = 50M
+post_max_size = 50M
+memory_limit = 256M
+max_execution_time = 300
+```
+
+**Restart Apache** after changes.
+
+## ✅ Testing
+
+### Test 1: Access Application
+
+1. Open browser
+2. Visit: http://localhost/wifight/
+3. Should redirect to frontend/index.html
+4. Should see login page
+
+### Test 2: Test Backend
+
+Visit: http://localhost/wifight/backend/test.php
+
+Expected response:
+```json
+{
+  "success": true,
+  "message": "Database connection successful!",
+  "users_count": 1,
+  "server_time": "2024-01-01 12:00:00"
+}
+```
+
+### Test 3: Test API Health
+
+Visit: http://localhost/wifight/api/health.php
+
+Expected response:
+```json
+{
+  "success": true,
+  "message": "WiFight API is healthy",
+  "timestamp": "2024-01-01 12:00:00",
+  "database": "connected",
+  "version": "1.0.0"
+}
+```
+
+### Test 4: Test Login
+
+**Method 1: Using Browser**
+1. Visit: http://localhost/wifight/
+2. Enter email: admin@wifight.com
+3. Enter password: admin123
+4. Click Login
+5. Should see dashboard
+
+**Method 2: Using cURL**
+```bash
+curl -X POST http://localhost/wifight/api/auth/login.php \
+  -H "Content-Type: application/json" \
+  -d "{\"email\":\"admin@wifight.com\",\"password\":\"admin123\"}"
+```
+
+Expected response:
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "data": {
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGc...",
+    "user": {
+      "id": 1,
+      "email": "admin@wifight.com",
+      "full_name": "Admin User",
+      "role": "admin"
+    }
+  }
+}
+```
+
+### Test 5: Test Portal
+
+Visit: http://localhost/wifight/portal/
+
+Should see:
+- ✅ WiFight Portal page
+- ✅ Three tabs: Voucher, Purchase, Free Access
+- ✅ Plans loading (might show "Loading plans...")
+
+## 🔧 Troubleshooting
+
+### Problem: Database Connection Failed
+
+**Solution 1: Check MySQL is Running**
+```
+1. Open XAMPP Control Panel
+2. Check if MySQL shows "Running"
+3. If not, click "Start"
+```
+
+**Solution 2: Check Database Name**
+```sql
+-- In phpMyAdmin, verify database exists
+SHOW DATABASES;
+-- Should list 'wifight_db'
+```
+
+**Solution 3: Check Credentials**
+```php
+// backend/config/database.php
+// Verify:
+$host = "localhost";  // Correct?
+$db_name = "wifight_db";  // Correct?
+$username = "root";  // Correct?
+$password = "";  // Correct?
+```
+
+### Problem: 404 Not Found (All Pages)
+
+**Solution: Enable mod_rewrite**
+```
+1. Edit C:\xampp\apache\conf\httpd.conf
+2. Find: #LoadModule rewrite_module modules/mod_rewrite.so
+3. Remove the # at start
+4. Save file
+5. Restart Apache
+```
+
+### Problem: CORS Errors
+
+**Solution 1: Check .htaccess exists**
+```
+Verify file exists: C:\xampp\htdocs\wifight\.htaccess
+```
+
+**Solution 2: Enable mod_headers**
+```
+1. Edit C:\xampp\apache\conf\httpd.conf
+2. Find: #LoadModule headers_module modules/mod_headers.so
+3. Remove the # at start
+4. Restart Apache
+```
+
+### Problem: Login Fails with "Invalid Token"
+
+**Solution: Update JWT Secret**
+```php
+// backend/config/constants.php
+define('JWT_SECRET', 'a-new-random-secret-key');
+
+// Clear browser cache
+// Try login again
+```
+
+### Problem: Plans Not Loading
+
+**Solution: Check Database**
+```sql
+-- In phpMyAdmin
+SELECT * FROM plans;
+-- Should show 5 plans
+
+-- If empty, import again:
+-- Import database/schema.sql
+```
+
+### Problem: File Upload Errors
+
+**Solution: Check Permissions**
+```
+Windows:
+1. Right-click storage/uploads/
+2. Properties → Security
+3. Grant full control
+
+Linux/macOS:
+chmod -R 777 storage/uploads/
+```
+
+### Problem: API Returns Empty
+
+**Solution: Check PHP Errors**
+```php
+// Temporarily enable errors
+// backend/config/database.php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Check C:\xampp\apache\logs\error.log
+```
+
+## 📝 Post-Installation
+
+### Step 1: Change Default Password
+
+```
+1. Login as admin
+2. Go to Settings
+3. Change password from 'admin123' to something secure
+```
+
+### Step 2: Update JWT Secret
+
+```php
+// backend/config/constants.php
+define('JWT_SECRET', 'your-production-secret-key-very-long-and-random');
+```
+
+### Step 3: Add Omada Controller
+
+```
+1. Login to dashboard
+2. Go to Controllers tab
+3. Click "Add Controller"
+4. Enter:
+   - Name: Main Controller
+   - IP Address: Your controller IP
+   - Port: 8043
+   - Username: Your Omada username
+   - Password: Your Omada password
+   - Site ID: default
+5. Click "Save"
+6. Test connection
+```
+
+### Step 4: Create Plans
+
+```
+1. Go to Plans tab
+2. Click "Add Plan"
+3. Create your pricing plans
+4. Set duration, data limits, bandwidth
+```
+
+### Step 5: Generate Vouchers
+
+```
+1. Go to Vouchers tab
+2. Click "Generate Vouchers"
+3. Select plan
+4. Enter quantity
+5. Generate
+6. Export or email vouchers
+```
+
+## 🎉 Success!
+
+Your WiFight installation is complete!
+
+### Quick Links
+- **Dashboard**: http://localhost/wifight/
+- **Portal**: http://localhost/wifight/portal/
+- **API Health**: http://localhost/wifight/api/health.php
+- **phpMyAdmin**: http://localhost/phpmyadmin
+
+### Default Credentials
+- **Email**: admin@wifight.com
+- **Password**: admin123
+- **⚠️ CHANGE IMMEDIATELY AFTER FIRST LOGIN**
+
+## 📞 Need Help?
+
+- Email: support@wifight.com
+- Documentation: Check docs/ folder
+- Issues: Create a GitHub issue
+
+---
+
+**Installation Time**: 20-30 minutes
+**Difficulty**: Beginner-Friendly ⭐⭐☆☆☆

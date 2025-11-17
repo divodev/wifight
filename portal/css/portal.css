@@ -1,0 +1,318 @@
+/* Portal Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    min-height: 100vh;
+}
+
+/* Tab Buttons */
+.tab-button {
+    background-color: transparent;
+    border: none;
+    color: #6B7280;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.tab-button:hover {
+    background-color: #F3F4F6;
+    color: #1F2937;
+}
+
+.tab-button.active {
+    color: #4F46E5;
+    border-bottom: 3px solid #4F46E5;
+    background-color: #EEF2FF;
+}
+
+/* Tab Content */
+.tab-content {
+    animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Plan Cards */
+.plan-card {
+    background: white;
+    border: 2px solid #E5E7EB;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.plan-card:hover {
+    border-color: #4F46E5;
+    box-shadow: 0 10px 25px rgba(79, 70, 229, 0.1);
+    transform: translateY(-5px);
+}
+
+.plan-card.popular {
+    border-color: #4F46E5;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.plan-card.popular .plan-name,
+.plan-card.popular .plan-price,
+.plan-card.popular .plan-feature {
+    color: white;
+}
+
+/* Price Display */
+.plan-price {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1F2937;
+}
+
+.plan-price span {
+    font-size: 1rem;
+    color: #6B7280;
+}
+
+/* Features List */
+.plan-features {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.plan-feature {
+    padding: 0.5rem 0;
+    color: #4B5563;
+    display: flex;
+    align-items: center;
+}
+
+.plan-feature:before {
+    content: "✓";
+    color: #10B981;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+/* Loading Spinner */
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #4F46E5;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Success/Error Messages */
+.alert {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    animation: slideDown 0.3s;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-success {
+    background-color: #D1FAE5;
+    color: #065F46;
+    border: 1px solid #10B981;
+}
+
+.alert-error {
+    background-color: #FEE2E2;
+    color: #991B1B;
+    border: 1px solid #EF4444;
+}
+
+.alert-info {
+    background-color: #DBEAFE;
+    color: #1E40AF;
+    border: 1px solid #3B82F6;
+}
+
+/* Input Auto-format */
+input[type="text"]#voucherCode {
+    letter-spacing: 2px;
+}
+
+/* Social Login Buttons */
+.social-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+
+.social-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.facebook-btn {
+    background-color: #1877F2;
+    color: white;
+}
+
+.google-btn {
+    background-color: white;
+    color: #1F2937;
+    border: 1px solid #E5E7EB;
+}
+
+.social-btn img {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+}
+
+/* Payment Methods */
+.payment-method {
+    border: 2px solid #E5E7EB;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.payment-method:hover {
+    border-color: #4F46E5;
+    background-color: #EEF2FF;
+}
+
+.payment-method.selected {
+    border-color: #4F46E5;
+    background-color: #EEF2FF;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .tab-button {
+        font-size: 0.875rem;
+        padding: 1rem 0.5rem;
+    }
+
+    .plan-card {
+        margin-bottom: 1rem;
+    }
+
+    h1 {
+        font-size: 2.5rem;
+    }
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background-color: #E5E7EB;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4F46E5 0%, #7C3AED 100%);
+    transition: width 0.3s;
+}
+
+/* Timer Display */
+.timer {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4F46E5;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+}
+
+/* Voucher Code Display */
+.voucher-code-display {
+    background-color: #F3F4F6;
+    border: 2px dashed #9CA3AF;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: #1F2937;
+}
+
+/* Animation Effects */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Connection Status */
+.connection-status {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 600;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+.status-connected {
+    background-color: #10B981;
+    color: white;
+}
+
+.status-connecting {
+    background-color: #F59E0B;
+    color: white;
+}
+
+.status-disconnected {
+    background-color: #EF4444;
+    color: white;
+}

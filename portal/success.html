@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connected - WiFight Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/portal.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-green-400 via-blue-500 to-purple-600">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Success Card -->
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+                <!-- Success Header -->
+                <div class="bg-gradient-to-r from-green-500 to-blue-500 p-8 text-center">
+                    <div class="text-6xl mb-4">✓</div>
+                    <h1 class="text-3xl font-bold text-white mb-2">You're Connected!</h1>
+                    <p class="text-white text-lg opacity-90">Enjoy your internet access</p>
+                </div>
+
+                <!-- Session Info -->
+                <div class="p-8">
+                    <div id="sessionInfo" class="space-y-4">
+                        <!-- Will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Time Remaining -->
+                    <div class="mt-8 p-6 bg-blue-50 rounded-lg">
+                        <div class="text-center mb-4">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">Time Remaining</h3>
+                            <div id="timeRemaining" class="timer">--:--:--</div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="progress-bar mt-4">
+                            <div id="progressFill" class="progress-fill" style="width: 100%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Data Usage (if applicable) -->
+                    <div id="dataUsageSection" class="mt-6 p-6 bg-purple-50 rounded-lg hidden">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Data Usage</h3>
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-600">Used</span>
+                            <span id="dataUsed" class="font-bold">0 MB</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="dataProgressFill" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-gray-600">Limit</span>
+                            <span id="dataLimit" class="font-bold">-- MB</span>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="mt-8 grid grid-cols-2 gap-4">
+                        <button onclick="extendSession()" 
+                                class="bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition">
+                            🔄 Extend Time
+                        </button>
+                        <button onclick="disconnectSession()" 
+                                class="bg-red-600 text-white py-3 rounded-lg font-semibold hover:bg-red-700 transition">
+                            🚪 Disconnect
+                        </button>
+                    </div>
+
+                    <!-- Support Info -->
+                    <div class="mt-8 text-center text-sm text-gray-600">
+                        <p>Having issues? Contact support: <a href="mailto:support@wifight.com" class="text-blue-600 hover:underline">support@wifight.com</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Connection Tips -->
+            <div class="mt-6 bg-white rounded-lg p-6 shadow-lg">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">💡 Tips for Better Connection</h3>
+                <ul class="space-y-2 text-gray-600">
+                    <li>✓ Stay within range of the WiFi access point</li>
+                    <li>✓ Close unused apps to save data</li>
+                    <li>✓ Use secure websites (HTTPS)</li>
+                    <li>✓ Your session will automatically end when time expires</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get session type from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const sessionType = urlParams.get('type');
+
+        // Load session information
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSessionInfo();
+            startTimers();
+        });
+
+        function loadSessionInfo() {
+            const sessionInfo = document.getElementById('sessionInfo');
+            
+            if (sessionType === 'voucher') {
+                const voucher = JSON.parse(sessionStorage.getItem('activeVoucher') || '{}');
+                
+                sessionInfo.innerHTML = `
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600 mb-1">Plan</p>
+                            <p class="text-lg font-bold">${voucher.plan_name || 'N/A'}</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600 mb-1">Duration</p>
+                            <p class="text-lg font-bold">${voucher.duration_hours || 0} hours</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600 mb-1">Data Limit</p>
+                            <p class="text-lg font-bold">${voucher.data_limit_mb ? voucher.data_limit_mb + ' MB' : 'Unlimited'}</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg">
+                            <p class="text-sm text-gray-600 mb-1">Speed</p>
+                            <p class="text-lg font-bold">${voucher.bandwidth_down ? (voucher.bandwidth_down / 1024).toFixed(1) + ' Mbps' : 'Standard'}</p>
+                        </div>
+                    </div>
+                `;
+
+                // Show data usage section if there's a limit
+                if (voucher.data_limit_mb) {
+                    document.getElementById('dataUsageSection').classList.remove('hidden');
+                    document.getElementById('dataLimit').textContent = voucher.data_limit_mb + ' MB';
+                }
+            } else if (sessionType === 'free') {
+                sessionInfo.innerHTML = `
+                    <div class="text-center p-6 bg-green-50 rounded-lg">
+                        <h3 class="text-xl font-bold text-green-800 mb-2">Free Access Activated!</h3>
+                        <p class="text-green-700">You have 30 minutes of free internet access</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Timer variables
+        let timeRemaining = 30 * 60; // 30 minutes in seconds (adjust based on plan)
+        let timerInterval;
+
+        function startTimers() {
+            // Update timer every second
+            timerInterval = setInterval(() => {
+                if (timeRemaining > 0) {
+                    timeRemaining--;
+                    updateTimerDisplay();
+                    updateProgress();
+                } else {
+                    clearInterval(timerInterval);
+                    sessionExpired();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const hours = Math.floor(timeRemaining / 3600);
+            const minutes = Math.floor((timeRemaining % 3600) / 60);
+            const seconds = timeRemaining % 60;
+
+            const display = `${pad(hours)}:${pad(minutes)}:${pad(seconds)}`;
+            document.getElementById('timeRemaining').textContent = display;
+        }
+
+        function updateProgress() {
+            const totalTime = 30 * 60; // Total time in seconds
+            const percentage = (timeRemaining / totalTime) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+        }
+
+        function pad(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        function sessionExpired() {
+            alert('Your session has expired. You will be redirected to the portal.');
+            window.location.href = 'index.html';
+        }
+
+        function extendSession() {
+            alert('Redirect to purchase more time...');
+            window.location.href = 'index.html';
+        }
+
+        function disconnectSession() {
+            if (confirm('Are you sure you want to disconnect?')) {
+                // Clear session data
+                sessionStorage.removeItem('activeVoucher');
+                sessionStorage.removeItem('activeSession');
+                
+                // Redirect to portal
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Simulate data usage update (in real app, this would come from the controller)
+        setInterval(() => {
+            const dataUsed = Math.floor(Math.random() * 10) + 1; // Random data usage
+            const currentUsage = parseInt(document.getElementById('dataUsed').textContent) || 0;
+            const newUsage = currentUsage + dataUsed;
+            
+            document.getElementById('dataUsed').textContent = newUsage + ' MB';
+            
+            // Update data progress
+            const limit = parseInt(document.getElementById('dataLimit').textContent) || 100;
+            const percentage = (newUsage / limit) * 100;
+            document.getElementById('dataProgressFill').style.width = Math.min(percentage, 100) + '%';
+        }, 5000); // Update every 5 seconds
+    </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+2025-11-09T10:48:21+01:00 Exception in login.php: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'wifight_db.users' doesn't exist in engine
+#0 C:\xampp\htdocs\wifight\backend\models\user.php(41): PDOStatement->execute()
+#1 C:\xampp\htdocs\wifight\backend\api\auth\login.php(58): User->findByEmail('admin@wifight.c...')
+#2 {main}
+2025-11-09T10:48:31+01:00 Exception in login.php: SQLSTATE[42S02]: Base table or view not found: 1932 Table 'wifight_db.users' doesn't exist in engine
+#0 C:\xampp\htdocs\wifight\backend\models\user.php(41): PDOStatement->execute()
+#1 C:\xampp\htdocs\wifight\backend\api\auth\login.php(58): User->findByEmail('admin@wifight.c...')
+#2 {main}

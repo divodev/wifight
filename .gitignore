@@ -1,4 +1,4 @@
- 'EOF'
+ 
 # Dependencies
 /vendor/
 /node_modules/
@@ -33,4 +33,4 @@ Thumbs.db
 
 # Claude Code
 .claude/cache/
-EOF
+

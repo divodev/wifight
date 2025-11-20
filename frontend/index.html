@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFight ISP - Admin Dashboard</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2><i class="fas fa-wifi"></i> WiFight ISP</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </a>
+            <a href="#users" class="nav-link" data-page="users">
+                <i class="fas fa-users"></i> Users
+            </a>
+            <a href="#plans" class="nav-link" data-page="plans">
+                <i class="fas fa-list"></i> Plans
+            </a>
+            <a href="#sessions" class="nav-link" data-page="sessions">
+                <i class="fas fa-network-wired"></i> Sessions
+            </a>
+            <a href="#payments" class="nav-link" data-page="payments">
+                <i class="fas fa-credit-card"></i> Payments
+            </a>
+            <a href="#subscriptions" class="nav-link" data-page="subscriptions">
+                <i class="fas fa-sync-alt"></i> Subscriptions
+            </a>
+            <a href="#controllers" class="nav-link" data-page="controllers">
+                <i class="fas fa-server"></i> Controllers
+            </a>
+            <a href="#analytics" class="nav-link" data-page="analytics">
+                <i class="fas fa-chart-bar"></i> Analytics
+            </a>
+            <a href="#vouchers" class="nav-link" data-page="vouchers">
+                <i class="fas fa-ticket-alt"></i> Vouchers
+            </a>
+            <a href="#notifications" class="nav-link" data-page="notifications">
+                <i class="fas fa-bell"></i> Notifications
+                <span class="badge" id="notification-badge">0</span>
+            </a>
+            <a href="#settings" class="nav-link" data-page="settings">
+                <i class="fas fa-cog"></i> Settings
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link" id="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <button class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="user-name">Admin User</span>
+                    <span id="user-role" class="badge badge-primary">Admin</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="content" id="content">
+            <!-- Dashboard will load here -->
+        </div>
+    </main>
+
+    <!-- Modal Container -->
+    <div id="modal-container"></div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-overlay" id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/pages/dashboard.js"></script>
+    <script src="assets/js/pages/users.js"></script>
+    <script src="assets/js/pages/plans.js"></script>
+    <script src="assets/js/pages/sessions.js"></script>
+    <script src="assets/js/pages/payments.js"></script>
+    <script src="assets/js/pages/analytics.js"></script>
+</body>
+</html>

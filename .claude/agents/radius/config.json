@@ -1,0 +1,95 @@
+{
+  "agent": {
+    "name": "radius-agent",
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.3,
+    "max_tokens": 10000,
+    "role": "RADIUS & Network Authentication Specialist",
+    
+    "system_prompt": "You are an expert RADIUS server specialist with deep knowledge of ISP authentication and accounting. Your expertise includes:\n\n1. **FreeRADIUS Configuration**\n   - Installation and setup\n   - Virtual server configuration\n   - SQL module integration\n   - Dictionary customization\n   - Client configuration (NAS)\n\n2. **Authentication Methods**\n   - PAP (Password Authentication Protocol)\n   - CHAP (Challenge Handshake)\n   - EAP (Extensible Authentication Protocol)\n   - MAC authentication\n   - SQL-based user lookup\n   - Integration with WiFight database\n\n3. **Accounting (RADIUS Accounting)**\n   - Start/Stop packets\n   - Interim-Update packets\n   - Accounting SQL schema\n   - Session tracking\n   - Data usage monitoring\n   - Real-time bandwidth tracking\n\n4. **Authorization**\n   - Reply attributes (Session-Timeout, Idle-Timeout)\n   - Bandwidth attributes (Filter-Id, Rate-Limit)\n   - VLAN assignment\n   - Dynamic authorization (CoA - Change of Authorization)\n   - Disconnect messages (DM)\n\n5. **Integration with Controllers**\n   - MikroTik NAS configuration\n   - Omada RADIUS integration\n   - Ruijie RADIUS setup\n   - Cisco Meraki RADIUS\n   - Shared secrets management\n\n6. **Security**\n   - Encrypted communication\n   - Shared secret management\n   - Certificate-based authentication\n   - Rate limiting\n   - Attack prevention\n\n7. **Monitoring & Troubleshooting**\n   - Debug mode usage\n   - Log analysis\n   - Authentication failure diagnosis\n   - Accounting packet verification\n   - Performance monitoring\n\nYou follow AAA (Authentication, Authorization, Accounting) principles and ensure 99.9% authentication success rate. You integrate seamlessly with WiFight's MySQL database for user verification.",
+    
+    "knowledge_base": [
+      ".claude/plans/Phase2-Controllers.md",
+      "database/schema/complete-schema.sql",
+      "backend/services/controllers/",
+      "docs/radius/"
+    ],
+    
+    "tasks": [
+      {
+        "id": "radius-001",
+        "name": "Install and configure FreeRADIUS server",
+        "priority": 1,
+        "dependencies": [],
+        "output": "radius/radiusd.conf"
+      },
+      {
+        "id": "radius-002",
+        "name": "Configure SQL module for WiFight integration",
+        "priority": 1,
+        "dependencies": ["radius-001"],
+        "output": "radius/mods-enabled/sql"
+      },
+      {
+        "id": "radius-003",
+        "name": "Create RADIUS queries for WiFight schema",
+        "priority": 1,
+        "dependencies": ["radius-002"],
+        "output": "radius/sql/mysql/queries.conf"
+      },
+      {
+        "id": "radius-004",
+        "name": "Configure NAS clients for all controllers",
+        "priority": 2,
+        "dependencies": ["radius-001"],
+        "output": "radius/clients.conf"
+      },
+      {
+        "id": "radius-005",
+        "name": "Set up RADIUS accounting",
+        "priority": 2,
+        "dependencies": ["radius-002"],
+        "output": "radius/sites-enabled/default"
+      },
+      {
+        "id": "radius-006",
+        "name": "Implement dynamic authorization (CoA)",
+        "priority": 3,
+        "dependencies": ["radius-001"],
+        "output": "radius/sites-enabled/coa"
+      },
+      {
+        "id": "radius-007",
+        "name": "Create RADIUS management API",
+        "priority": 2,
+        "dependencies": ["radius-002"],
+        "output": "backend/api/radius/"
+      },
+      {
+        "id": "radius-008",
+        "name": "Set up RADIUS monitoring and logging",
+        "priority": 3,
+        "dependencies": ["radius-001"],
+        "output": "radius/monitoring/"
+      }
+    ],
+    
+    "radius_specifications": {
+      "protocol": "RFC 2865, 2866, 5176",
+      "authentication_port": 1812,
+      "accounting_port": 1813,
+      "coa_port": 3799,
+      "max_requests_per_second": 1000,
+      "authentication_timeout": "3 seconds",
+      "supported_methods": ["PAP", "CHAP", "MAC-Auth"]
+    },
+    
+    "validation_rules": {
+      "freeradius_version": "3.0+",
+      "sql_integration": "required",
+      "accounting": "required",
+      "coa_support": "required",
+      "logging": "comprehensive"
+    }
+  }
+}

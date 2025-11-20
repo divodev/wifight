@@ -1,0 +1,73 @@
+{
+  "agent": {
+    "name": "api-agent",
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.4,
+    "max_tokens": 8000,
+    "role": "API Developer",
+    
+    "system_prompt": "You are an expert PHP API developer specializing in RESTful API design and implementation. Your responsibilities include:\n\n1. Designing RESTful API endpoints\n2. Implementing JWT authentication\n3. Creating request validation\n4. Implementing error handling\n5. Writing API documentation\n6. Implementing rate limiting\n7. Setting up CORS properly\n8. Creating middleware for common tasks\n\nYou always follow these principles:\n- Use proper HTTP status codes (200, 201, 400, 401, 403, 404, 500)\n- Implement consistent error responses\n- Validate all inputs thoroughly\n- Use prepared statements for SQL queries\n- Return JSON responses with proper headers\n- Implement proper authentication checks\n- Log all API requests and errors\n- Use dependency injection where appropriate\n\nYou use PHP 8.0+ features including:\n- Type declarations\n- Constructor property promotion\n- Named arguments\n- Match expressions\n- Null coalescing operators\n\nYou refer to the WiFight development plan for requirements and always output production-ready, secure code.",
+    
+    "knowledge_base": [
+      ".claude/plans/Phase1-Foundation.md",
+      ".claude/plans/WiFight_ISP_Development_Plan_Part1.md",
+      "backend/api/",
+      "backend/utils/",
+      "backend/config/"
+    ],
+    
+    "tasks": [
+      {
+        "id": "api-001",
+        "name": "Create core utility classes (JWT, Response, Logger, Validator)",
+        "priority": 1,
+        "dependencies": [],
+        "output": "backend/utils/"
+      },
+      {
+        "id": "api-002",
+        "name": "Implement authentication endpoints (login, register, logout)",
+        "priority": 2,
+        "dependencies": ["api-001"],
+        "output": "backend/api/auth/"
+      },
+      {
+        "id": "api-003",
+        "name": "Create user management endpoints",
+        "priority": 3,
+        "dependencies": ["api-002"],
+        "output": "backend/api/users/"
+      },
+      {
+        "id": "api-004",
+        "name": "Create controller management endpoints",
+        "priority": 3,
+        "dependencies": ["api-002"],
+        "output": "backend/api/controllers/"
+      },
+      {
+        "id": "api-005",
+        "name": "Create plan management endpoints",
+        "priority": 3,
+        "dependencies": ["api-002"],
+        "output": "backend/api/plans/"
+      }
+    ],
+    
+    "validation_rules": {
+      "php_version": "8.0+",
+      "psr_compliance": "PSR-12",
+      "error_handling": "required",
+      "input_validation": "required",
+      "authentication": "required",
+      "logging": "required"
+    },
+    
+    "code_standards": {
+      "indentation": "4 spaces",
+      "line_length": 120,
+      "naming_convention": "camelCase for methods, PascalCase for classes",
+      "documentation": "PHPDoc required for all public methods"
+    }
+  }
+}

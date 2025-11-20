@@ -1,0 +1,104 @@
+{
+  "agent": {
+    "name": "security-agent",
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.2,
+    "max_tokens": 8000,
+    "role": "Security Engineer",
+
+    "system_prompt": "You are an expert security engineer specializing in web application security, particularly for PHP-based ISP billing systems. Your responsibilities include:\n\n1. Implementing secure authentication and authorization\n2. Protecting against common vulnerabilities (OWASP Top 10)\n3. Implementing encryption and hashing\n4. Securing API endpoints\n5. Implementing rate limiting and brute force protection\n6. Setting up audit logging\n7. Implementing CSRF and XSS protection\n8. Secure session management\n9. Input validation and sanitization\n10. Security headers and CORS policies\n\nYou always follow these security principles:\n- Never trust user input - validate and sanitize everything\n- Use prepared statements for ALL database queries\n- Hash passwords with bcrypt (cost 10+)\n- Use strong JWT secrets (min 32 chars)\n- Implement proper RBAC (Role-Based Access Control)\n- Log security events for audit trails\n- Use HTTPS in production (never HTTP for sensitive data)\n- Implement rate limiting on authentication endpoints\n- Sanitize output to prevent XSS\n- Use CSRF tokens for state-changing operations\n- Keep dependencies updated\n- Follow principle of least privilege\n\nYou refer to the WiFight development plan and OWASP guidelines, and always output secure, tested code.",
+
+    "knowledge_base": [
+      ".claude/plans/Phase1-Foundation.md",
+      "backend/utils/JWT.php",
+      "backend/utils/Validator.php",
+      "backend/config/database.php",
+      "backend/api/v1/auth.php"
+    ],
+
+    "tasks": [
+      {
+        "id": "sec-001",
+        "name": "Implement authentication security",
+        "priority": 1,
+        "dependencies": [],
+        "output": "backend/utils/Auth.php"
+      },
+      {
+        "id": "sec-002",
+        "name": "Implement rate limiting middleware",
+        "priority": 2,
+        "dependencies": [],
+        "output": "backend/middleware/RateLimit.php"
+      },
+      {
+        "id": "sec-003",
+        "name": "Implement CSRF protection",
+        "priority": 2,
+        "dependencies": [],
+        "output": "backend/middleware/CSRF.php"
+      },
+      {
+        "id": "sec-004",
+        "name": "Create security headers middleware",
+        "priority": 2,
+        "dependencies": [],
+        "output": "backend/middleware/SecurityHeaders.php"
+      },
+      {
+        "id": "sec-005",
+        "name": "Implement encryption utility",
+        "priority": 3,
+        "dependencies": [],
+        "output": "backend/utils/Encryption.php"
+      },
+      {
+        "id": "sec-006",
+        "name": "Create security audit script",
+        "priority": 4,
+        "dependencies": ["sec-001", "sec-002", "sec-003", "sec-004"],
+        "output": "scripts/security-audit.php"
+      }
+    ],
+
+    "security_checklist": {
+      "authentication": [
+        "Password hashing with bcrypt",
+        "JWT token validation",
+        "Token expiration handling",
+        "Refresh token mechanism",
+        "2FA support"
+      ],
+      "authorization": [
+        "Role-based access control",
+        "Permission checking",
+        "Resource ownership validation"
+      ],
+      "input_validation": [
+        "All user inputs validated",
+        "SQL injection prevention",
+        "XSS prevention",
+        "Command injection prevention"
+      ],
+      "api_security": [
+        "Rate limiting",
+        "CORS configuration",
+        "Security headers",
+        "HTTPS enforcement"
+      ],
+      "data_protection": [
+        "Sensitive data encryption",
+        "Secure password storage",
+        "API key protection",
+        "Database credentials security"
+      ]
+    },
+
+    "output_format": {
+      "type": "php",
+      "include_comments": true,
+      "include_phpdoc": true,
+      "follow_psr12": true
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "agent": {
+    "name": "database-agent",
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.3,
+    "max_tokens": 8000,
+    "role": "Database Architect",
+    
+    "system_prompt": "You are an expert database architect specializing in MySQL 8.0+ database design for high-performance ISP billing systems. Your responsibilities include:\n\n1. Designing normalized database schemas\n2. Creating optimized indexes and constraints\n3. Writing efficient SQL queries\n4. Implementing database migrations\n5. Optimizing query performance\n6. Setting up database triggers and stored procedures\n7. Implementing data integrity constraints\n8. Planning database partitioning strategies\n\nYou always follow these principles:\n- Use InnoDB engine for ACID compliance\n- Implement proper foreign key constraints\n- Create indexes for frequently queried columns\n- Use appropriate data types (INT for IDs, DECIMAL for money)\n- Add created_at/updated_at timestamps to all tables\n- Implement soft deletes where appropriate\n- Use transactions for data consistency\n- Add comprehensive comments to schema\n\nYou refer to the WiFight development plan in .claude/plans/ for requirements and always output valid, tested SQL code.",
+    
+    "knowledge_base": [
+      ".claude/plans/Phase1-Foundation.md",
+      ".claude/plans/WiFight_ISP_Development_Plan_Part1.md",
+      "database/schema/",
+      "backend/config/database.php"
+    ],
+    
+    "tasks": [
+      {
+        "id": "db-001",
+        "name": "Create complete database schema",
+        "priority": 1,
+        "dependencies": [],
+        "output": "database/schema/complete-schema.sql"
+      },
+      {
+        "id": "db-002",
+        "name": "Create database migration scripts",
+        "priority": 2,
+        "dependencies": ["db-001"],
+        "output": "database/migrations/"
+      },
+      {
+        "id": "db-003",
+        "name": "Create seed data scripts",
+        "priority": 3,
+        "dependencies": ["db-001"],
+        "output": "database/seeds/"
+      },
+      {
+        "id": "db-004",
+        "name": "Create database indexes",
+        "priority": 2,
+        "dependencies": ["db-001"],
+        "output": "database/schema/indexes.sql"
+      },
+      {
+        "id": "db-005",
+        "name": "Create stored procedures",
+        "priority": 4,
+        "dependencies": ["db-001"],
+        "output": "database/schema/procedures.sql"
+      }
+    ],
+    
+    "validation_rules": {
+      "sql_syntax": true,
+      "naming_convention": "snake_case",
+      "primary_keys": "required",
+      "foreign_keys": "required",
+      "indexes": "recommended",
+      "comments": "required"
+    },
+    
+    "output_format": {
+      "type": "sql",
+      "include_comments": true,
+      "include_drop_statements": false,
+      "use_if_not_exists": true
+    }
+  }
+}

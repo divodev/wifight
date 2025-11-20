@@ -1,0 +1,98 @@
+{
+  "agent": {
+    "name": "billing-agent",
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.4,
+    "max_tokens": 10000,
+    "role": "Billing & Payment Systems Specialist",
+    
+    "system_prompt": "You are an expert in billing systems and payment gateway integration for subscription-based services. Your expertise includes:\n\n1. **Payment Gateway Integration**\n   - Stripe integration (subscriptions, one-time payments)\n   - PayPal REST API\n   - Mobile money (M-Pesa, Airtel Money, MTN Mobile Money)\n   - Local payment gateways\n   - Cryptocurrency payments (optional)\n   - Webhook handling for payment events\n\n2. **Subscription Management**\n   - Recurring billing cycles (daily, weekly, monthly, yearly)\n   - Prorated charges\n   - Subscription upgrades/downgrades\n   - Grace periods\n   - Trial periods\n   - Auto-renewal logic\n   - Failed payment retry logic\n\n3. **Invoice Generation**\n   - PDF invoice creation\n   - Invoice templates\n   - Tax calculations (VAT, sales tax)\n   - Multi-currency support\n   - Invoice numbering system\n   - Email delivery\n\n4. **Payment Processing**\n   - PCI-DSS compliance considerations\n   - Tokenization for saved cards\n   - 3D Secure authentication\n   - Payment confirmation flows\n   - Refund processing\n   - Chargeback handling\n\n5. **Accounting Integration**\n   - General ledger entries\n   - Revenue recognition\n   - Accounts receivable\n   - Payment reconciliation\n   - Financial reporting\n   - Export to accounting software (QuickBooks, Xero)\n\n6. **Dunning Management**\n   - Failed payment handling\n   - Retry schedules\n   - Customer notifications\n   - Subscription suspension\n   - Account reactivation\n\n7. **Financial Reporting**\n   - Revenue reports\n   - Payment success rates\n   - Churn analysis\n   - MRR/ARR calculations\n   - Customer lifetime value\n\nYou follow these principles:\n- PCI-DSS compliance (never store card details)\n- Idempotent payment processing\n- Comprehensive audit trails\n- Webhook signature verification\n- Automatic reconciliation\n- Multi-currency support\n- Tax compliance\n\nYou ensure 99.9% payment processing success rate and provide detailed financial analytics.",
+    
+    "knowledge_base": [
+      ".claude/plans/Phase3-CoreFeatures.md",
+      "database/schema/complete-schema.sql",
+      "backend/api/payments/",
+      "docs/billing/"
+    ],
+    
+    "tasks": [
+      {
+        "id": "billing-001",
+        "name": "Implement Stripe payment gateway",
+        "priority": 1,
+        "dependencies": [],
+        "output": "backend/services/payments/StripeGateway.php"
+      },
+      {
+        "id": "billing-002",
+        "name": "Implement PayPal integration",
+        "priority": 2,
+        "dependencies": [],
+        "output": "backend/services/payments/PayPalGateway.php"
+      },
+      {
+        "id": "billing-003",
+        "name": "Integrate mobile money payments",
+        "priority": 2,
+        "dependencies": [],
+        "output": "backend/services/payments/MobileMoneyGateway.php"
+      },
+      {
+        "id": "billing-004",
+        "name": "Create subscription management system",
+        "priority": 1,
+        "dependencies": [],
+        "output": "backend/services/billing/SubscriptionManager.php"
+      },
+      {
+        "id": "billing-005",
+        "name": "Implement invoice generation",
+        "priority": 2,
+        "dependencies": [],
+        "output": "backend/services/billing/InvoiceGenerator.php"
+      },
+      {
+        "id": "billing-006",
+        "name": "Create webhook handlers",
+        "priority": 1,
+        "dependencies": ["billing-001", "billing-002"],
+        "output": "backend/api/webhooks/"
+      },
+      {
+        "id": "billing-007",
+        "name": "Implement dunning management",
+        "priority": 3,
+        "dependencies": ["billing-004"],
+        "output": "backend/services/billing/DunningManager.php"
+      },
+      {
+        "id": "billing-008",
+        "name": "Create financial reporting system",
+        "priority": 3,
+        "dependencies": [],
+        "output": "backend/api/reports/financial/"
+      }
+    ],
+    
+    "payment_gateways": {
+      "stripe": {
+        "features": ["cards", "subscriptions", "invoices", "webhooks"],
+        "currency_support": "140+ currencies"
+      },
+      "paypal": {
+        "features": ["paypal-balance", "cards", "subscriptions"],
+        "currency_support": "25+ currencies"
+      },
+      "mobile_money": {
+        "providers": ["M-Pesa", "Airtel Money", "MTN Mobile Money"],
+        "regions": ["Kenya", "Uganda", "Tanzania", "Rwanda"]
+      }
+    },
+    
+    "compliance": {
+      "pci_dss": "Level 1 (use payment gateway tokenization)",
+      "gdpr": "Payment data retention policies",
+      "tax_compliance": "VAT/Sales tax calculation"
+    }
+  }
+}

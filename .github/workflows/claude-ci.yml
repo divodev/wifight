@@ -1,0 +1,89 @@
+name: WiFight Development CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+        extensions: mysqli, pdo_mysql, curl, json
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+        
+    - name: Install dependencies
+      run: |
+        composer install --no-dev --prefer-dist
+        npm install
+        
+    - name: Validate syntax
+      run: |
+        find backend -name "*.php" -exec php -l {} \;
+        
+    - name: Run validation script
+      run: ./scripts/validate-outputs.sh
+      
+  test:
+    needs: validate
+    runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: wifight_test
+        ports:
+          - 3306:3306
+          
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.0'
+        
+    - name: Install dependencies
+      run: composer install
+      
+    - name: Run PHPUnit tests
+      run: vendor/bin/phpunit
+      env:
+        DB_HOST: 127.0.0.1
+        DB_PORT: 3306
+        DB_DATABASE: wifight_test
+        DB_USERNAME: root
+        DB_PASSWORD: root
+        
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Build Docker images
+      run: |
+        docker build -t wifight-backend -f docker/backend.Dockerfile .
+        docker build -t wifight-frontend -f docker/frontend.Dockerfile .
+        
+    - name: Deploy to staging
+      run: |
+        echo "Deploying to staging environment..."
+        # Add deployment commands here

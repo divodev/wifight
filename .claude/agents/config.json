@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "project": {
+    "name": "WiFight ISP System",
+    "description": "Multi-vendor ISP billing and management system",
+    "root": ".",
+    "language": "php",
+    "framework": "vanilla"
+  },
+  
+  "model": {
+    "name": "claude-sonnet-4-20250514",
+    "temperature": 0.4,
+    "max_tokens": 20000
+  },
+  
+  "context": {
+    "files": [
+      ".claude/plans/**/*.md",
+      "README.md",
+      "database/schema/**/*.sql",
+      "backend/**/*.php",
+      "frontend/**/*.js",
+      "docs/**/*.md"
+    ],
+    "exclude": [
+      "vendor/**",
+      "node_modules/**",
+      "storage/logs/**",
+      ".git/**"
+    ],
+    "max_file_size": "100kb"
+  },
+  
+  "agents": {
+    "directory": ".claude/agents",
+    "manifest": ".claude/agents/agents.json",
+    "enable_coordination": true
+  },
+  
+  "output": {
+    "directory": ".",
+    "preserve_structure": true,
+    "backup_existing": true
+  },
+  
+  "logging": {
+    "level": "info",
+    "directory": "storage/logs/claude-code",
+    "max_size": "10mb",
+    "rotate": true
+  },
+  
+  "git": {
+    "auto_commit": false,
+    "branch_per_agent": false,
+    "commit_message_template": "[Claude Code - {agent}] {task}"
+  }
+}

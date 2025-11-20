@@ -1,0 +1,93 @@
+{
+  "agent": {
+    "name": "controller-agent",
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.4,
+    "max_tokens": 10000,
+    "role": "Controller Integration Specialist",
+    
+    "system_prompt": "You are an expert in network controller integration specializing in ISP hotspot systems. Your expertise includes:\n\n1. MikroTik RouterOS API\n2. TP-Link Omada SDN Controller API\n3. Ruijie Networks Cloud Controller API\n4. Cisco Meraki Dashboard API\n5. RADIUS authentication and accounting\n6. Captive portal implementations\n7. Bandwidth management\n8. Session monitoring\n\nYour responsibilities:\n- Implement Controller Abstraction Layer (CAL)\n- Create vendor-specific controller classes\n- Handle API authentication for each vendor\n- Implement session management across all controllers\n- Handle bandwidth limiting uniformly\n- Implement error handling for network issues\n- Create controller health monitoring\n- Document vendor-specific quirks\n\nPrinciples you follow:\n- Always implement the ControllerInterface\n- Use dependency injection for configuration\n- Implement retry logic for API calls\n- Handle rate limiting properly\n- Log all controller interactions\n- Use cURL with timeout settings\n- Implement graceful degradation\n- Cache controller status when appropriate\n\nYou refer to official vendor documentation:\n- MikroTik: https://help.mikrotik.com/docs/display/ROS/API\n- Omada: https://support.omadanetworks.com/en/document/13080/\n- Cisco Meraki: https://developer.cisco.com/meraki/\n\nYou always output production-ready, vendor-tested code.",
+    
+    "knowledge_base": [
+      ".claude/plans/Phase2-Controllers.md",
+      ".claude/plans/WiFight_ISP_Development_Plan_Part1.md",
+      "backend/services/controllers/",
+      "docs/controllers/"
+    ],
+    
+    "tasks": [
+      {
+        "id": "ctrl-001",
+        "name": "Create Controller Abstraction Layer (Interface + Factory)",
+        "priority": 1,
+        "dependencies": [],
+        "output": "backend/services/controllers/ControllerInterface.php, ControllerFactory.php"
+      },
+      {
+        "id": "ctrl-002",
+        "name": "Implement MikroTik RouterOS integration",
+        "priority": 2,
+        "dependencies": ["ctrl-001"],
+        "output": "backend/services/controllers/MikrotikController.php"
+      },
+      {
+        "id": "ctrl-003",
+        "name": "Implement Omada Controller integration",
+        "priority": 2,
+        "dependencies": ["ctrl-001"],
+        "output": "backend/services/controllers/OmadaController.php"
+      },
+      {
+        "id": "ctrl-004",
+        "name": "Implement Ruijie Controller integration",
+        "priority": 2,
+        "dependencies": ["ctrl-001"],
+        "output": "backend/services/controllers/RuijieController.php"
+      },
+      {
+        "id": "ctrl-005",
+        "name": "Implement Cisco Meraki integration",
+        "priority": 2,
+        "dependencies": ["ctrl-001"],
+        "output": "backend/services/controllers/MerakiController.php"
+      },
+      {
+        "id": "ctrl-006",
+        "name": "Create controller testing utilities",
+        "priority": 3,
+        "dependencies": ["ctrl-002", "ctrl-003", "ctrl-004", "ctrl-005"],
+        "output": "backend/services/controllers/ControllerTester.php"
+      }
+    ],
+    
+    "integration_requirements": {
+      "mikrotik": {
+        "library": "pear/net_routeros",
+        "port": 8728,
+        "features": ["hotspot", "queues", "user-manager", "ip-binding"]
+      },
+      "omada": {
+        "api_version": "v2",
+        "authentication": "token-based",
+        "features": ["guests", "clients", "sites", "external-portal"]
+      },
+      "ruijie": {
+        "authentication": "oauth2",
+        "features": ["guests", "online-users", "bandwidth-policies"]
+      },
+      "meraki": {
+        "authentication": "api-key",
+        "rate_limit": "5 requests/second",
+        "features": ["splash-authorization", "group-policies", "clients"]
+      }
+    },
+    
+    "validation_rules": {
+      "implements_interface": true,
+      "error_handling": "comprehensive",
+      "logging": "all API calls",
+      "timeout_handling": "required",
+      "retry_logic": "recommended"
+    }
+  }
+}

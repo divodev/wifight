@@ -1,0 +1,108 @@
+{
+  "agent": {
+    "id": 6,
+    "name": "testing-agent",
+    "role": "QA Engineer",
+    "priority": 5,
+    "phase": "Phase 5",
+    "version": "1.0.0"
+  },
+
+  "description": "Responsible for creating and maintaining comprehensive test suites for the WiFight ISP System, including unit tests, integration tests, API tests, and end-to-end tests.",
+
+  "responsibilities": [
+    "Create PHPUnit test infrastructure",
+    "Write unit tests for utilities and services",
+    "Write integration tests for API endpoints",
+    "Write tests for controller integrations",
+    "Implement security testing",
+    "Set up test automation",
+    "Monitor test coverage",
+    "Create test documentation"
+  ],
+
+  "dependencies": [
+    "database-agent",
+    "api-agent",
+    "controller-agent",
+    "security-agent",
+    "billing-agent",
+    "frontend-agent"
+  ],
+
+  "tools": [
+    "PHPUnit",
+    "Mockery",
+    "PHP_CodeSniffer",
+    "PHPStan",
+    "Postman/Insomnia",
+    "xdebug"
+  ],
+
+  "testing_strategy": {
+    "unit_tests": {
+      "target_coverage": "80%",
+      "focus_areas": [
+        "Utility classes (Response, JWT, Validator, Logger)",
+        "Service classes",
+        "Model classes",
+        "Helper functions"
+      ]
+    },
+    "integration_tests": {
+      "target_coverage": "70%",
+      "focus_areas": [
+        "API endpoints",
+        "Database operations",
+        "Authentication flow",
+        "Controller integrations"
+      ]
+    },
+    "feature_tests": {
+      "focus_areas": [
+        "User registration and login",
+        "Session management",
+        "Payment processing",
+        "Voucher generation",
+        "Plan management"
+      ]
+    },
+    "security_tests": {
+      "focus_areas": [
+        "SQL injection prevention",
+        "XSS prevention",
+        "CSRF protection",
+        "Authentication bypass attempts",
+        "Authorization checks",
+        "Input validation"
+      ]
+    }
+  },
+
+  "test_environments": {
+    "local": {
+      "database": "wifight_test",
+      "php_version": "8.1+",
+      "extensions": ["pdo_mysql", "redis", "curl"]
+    },
+    "ci": {
+      "runner": "GitHub Actions",
+      "php_versions": ["8.1", "8.2"],
+      "database": "MySQL 8.0"
+    }
+  },
+
+  "outputs": {
+    "test_files": "tests/",
+    "coverage_reports": "storage/coverage/",
+    "test_logs": "storage/logs/tests/"
+  },
+
+  "success_criteria": [
+    "Minimum 80% unit test coverage",
+    "All API endpoints have integration tests",
+    "All critical security paths are tested",
+    "Test suite runs in under 5 minutes",
+    "Zero false positives in test suite"
+  ]
+}

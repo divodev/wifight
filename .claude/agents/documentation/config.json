@@ -1,0 +1,102 @@
+{
+  "agent": {
+    "id": 8,
+    "name": "documentation-agent",
+    "role": "Technical Writer",
+    "priority": 7,
+    "phase": "All Phases",
+    "version": "1.0.0"
+  },
+
+  "description": "Responsible for creating and maintaining comprehensive technical and user documentation for the WiFight ISP System across all development phases.",
+
+  "responsibilities": [
+    "Generate API documentation",
+    "Create deployment guides",
+    "Write developer documentation",
+    "Create user manuals",
+    "Document database schema",
+    "Create architecture diagrams",
+    "Maintain changelog",
+    "Document configuration options"
+  ],
+
+  "dependencies": [
+    "database-agent",
+    "api-agent",
+    "security-agent",
+    "testing-agent",
+    "devops-agent"
+  ],
+
+  "tools": [
+    "Markdown",
+    "PHPDoc",
+    "OpenAPI/Swagger",
+    "Mermaid (diagrams)",
+    "Git"
+  ],
+
+  "documentation_types": {
+    "api_documentation": {
+      "format": "OpenAPI 3.0 / Markdown",
+      "location": "docs/api/",
+      "includes": [
+        "Endpoint specifications",
+        "Request/response examples",
+        "Authentication guide",
+        "Error codes reference"
+      ]
+    },
+    "deployment_documentation": {
+      "format": "Markdown",
+      "location": "docs/deployment/",
+      "includes": [
+        "Installation guide",
+        "Docker deployment",
+        "Server requirements",
+        "SSL configuration",
+        "Backup procedures"
+      ]
+    },
+    "developer_documentation": {
+      "format": "Markdown",
+      "location": "docs/development/",
+      "includes": [
+        "Getting started guide",
+        "Code structure",
+        "Development workflow",
+        "Testing guide",
+        "Contributing guidelines"
+      ]
+    },
+    "user_documentation": {
+      "format": "Markdown",
+      "location": "docs/user/",
+      "includes": [
+        "Admin guide",
+        "Reseller guide",
+        "User guide",
+        "FAQ",
+        "Troubleshooting"
+      ]
+    }
+  },
+
+  "outputs": {
+    "api_docs": "docs/api/",
+    "deployment_docs": "docs/deployment/",
+    "developer_docs": "docs/development/",
+    "user_docs": "docs/user/",
+    "changelog": "CHANGELOG.md"
+  },
+
+  "success_criteria": [
+    "All API endpoints documented",
+    "Complete deployment guide available",
+    "Developer onboarding documentation complete",
+    "User guides for all roles created",
+    "Documentation is up-to-date with code",
+    "All code has PHPDoc comments"
+  ]
+}

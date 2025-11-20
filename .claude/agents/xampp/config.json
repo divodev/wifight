@@ -1,0 +1,94 @@
+{
+  "agent": {
+    "name": "xampp-agent",
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.3,
+    "max_tokens": 8000,
+    "role": "XAMPP Development Environment Specialist",
+    
+    "system_prompt": "You are an expert in XAMPP (Windows/Linux/macOS) development environment setup and configuration. Your expertise includes:\n\n1. **XAMPP Installation & Configuration**\n   - Apache configuration\n   - MySQL/MariaDB setup\n   - PHP configuration and extensions\n   - phpMyAdmin setup\n   - Virtual hosts configuration\n   - SSL/HTTPS setup\n\n2. **Project Deployment**\n   - Deploying PHP applications to htdocs\n   - Setting proper file permissions\n   - Configuring .htaccess files\n   - Database import/export\n   - Composer integration\n\n3. **Development Tools Integration**\n   - Redis integration with XAMPP\n   - Configuring PHP extensions\n   - Mail server setup (for testing)\n   - Xdebug configuration\n\n4. **Security & Best Practices**\n   - Securing phpMyAdmin\n   - Setting MySQL root password\n   - Configuring PHP security settings\n   - Backup strategies\n\n5. **Troubleshooting**\n   - Port conflicts (80, 443, 3306)\n   - Apache startup issues\n   - MySQL connection problems\n   - PHP extension errors\n\nYou provide step-by-step instructions for Windows, Linux, and macOS environments.",
+    
+    "knowledge_base": [
+      ".claude/plans/Phase6-Deployment.md",
+      "backend/**/*.php",
+      "database/schema/**/*.sql",
+      "docs/deployment/"
+    ],
+    
+    "tasks": [
+      {
+        "id": "xampp-001",
+        "name": "Create XAMPP installation guide",
+        "priority": 1,
+        "dependencies": [],
+        "output": "docs/deployment/xampp-installation.md"
+      },
+      {
+        "id": "xampp-002",
+        "name": "Create Apache virtual host configuration",
+        "priority": 2,
+        "dependencies": ["xampp-001"],
+        "output": "xampp/apache/conf/extra/httpd-vhosts.conf"
+      },
+      {
+        "id": "xampp-003",
+        "name": "Create PHP configuration for WiFight",
+        "priority": 2,
+        "dependencies": ["xampp-001"],
+        "output": "xampp/php/php.ini"
+      },
+      {
+        "id": "xampp-004",
+        "name": "Create deployment script",
+        "priority": 3,
+        "dependencies": ["xampp-002", "xampp-003"],
+        "output": "scripts/deploy-to-xampp.sh"
+      },
+      {
+        "id": "xampp-005",
+        "name": "Create database import script",
+        "priority": 2,
+        "dependencies": ["xampp-001"],
+        "output": "scripts/import-database-xampp.sh"
+      },
+      {
+        "id": "xampp-006",
+        "name": "Create Redis integration guide",
+        "priority": 3,
+        "dependencies": ["xampp-001"],
+        "output": "docs/deployment/redis-xampp-integration.md"
+      },
+      {
+        "id": "xampp-007",
+        "name": "Create XAMPP testing checklist",
+        "priority": 3,
+        "dependencies": ["xampp-004", "xampp-005"],
+        "output": "docs/deployment/xampp-testing-checklist.md"
+      }
+    ],
+    
+    "platforms": {
+      "windows": {
+        "xampp_path": "C:\\xampp",
+        "htdocs_path": "C:\\xampp\\htdocs",
+        "apache_config": "C:\\xampp\\apache\\conf\\httpd.conf",
+        "php_config": "C:\\xampp\\php\\php.ini",
+        "mysql_config": "C:\\xampp\\mysql\\bin\\my.ini"
+      },
+      "linux": {
+        "xampp_path": "/opt/lampp",
+        "htdocs_path": "/opt/lampp/htdocs",
+        "apache_config": "/opt/lampp/etc/httpd.conf",
+        "php_config": "/opt/lampp/etc/php.ini",
+        "mysql_config": "/opt/lampp/etc/my.cnf"
+      },
+      "macos": {
+        "xampp_path": "/Applications/XAMPP",
+        "htdocs_path": "/Applications/XAMPP/htdocs",
+        "apache_config": "/Applications/XAMPP/etc/httpd.conf",
+        "php_config": "/Applications/XAMPP/etc/php.ini",
+        "mysql_config": "/Applications/XAMPP/etc/my.cnf"
+      }
+    }
+  }
+}

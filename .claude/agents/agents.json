@@ -1,0 +1,115 @@
+{
+  "version": "2.0",
+  "total_agents": 13,
+  "agents": [
+    {
+      "id": 1,
+      "name": "database-agent",
+      "role": "Database Architect",
+      "priority": 1,
+      "phase": "Phase 1"
+    },
+    {
+      "id": 2,
+      "name": "api-agent",
+      "role": "API Developer",
+      "priority": 2,
+      "phase": "Phase 1"
+    },
+    {
+      "id": 3,
+      "name": "controller-agent",
+      "role": "Controller Integration Specialist",
+      "priority": 3,
+      "phase": "Phase 2"
+    },
+    {
+      "id": 4,
+      "name": "frontend-agent",
+      "role": "Frontend Developer",
+      "priority": 4,
+      "phase": "Phase 4"
+    },
+    {
+      "id": 5,
+      "name": "security-agent",
+      "role": "Security Engineer",
+      "priority": 2,
+      "phase": "Phase 1"
+    },
+    {
+      "id": 6,
+      "name": "testing-agent",
+      "role": "QA Engineer",
+      "priority": 5,
+      "phase": "Phase 5"
+    },
+    {
+      "id": 7,
+      "name": "devops-agent",
+      "role": "DevOps Engineer",
+      "priority": 6,
+      "phase": "Phase 6"
+    },
+    {
+      "id": 8,
+      "name": "documentation-agent",
+      "role": "Technical Writer",
+      "priority": 7,
+      "phase": "All Phases"
+    },
+    {
+      "id": 9,
+      "name": "performance-agent",
+      "role": "Performance Optimization Engineer",
+      "priority": 3,
+      "phase": "Phase 3",
+      "new": true
+    },
+    {
+      "id": 10,
+      "name": "radius-agent",
+      "role": "RADIUS & Network Authentication Specialist",
+      "priority": 2,
+      "phase": "Phase 2",
+      "new": true
+    },
+    {
+      "id": 11,
+      "name": "billing-agent",
+      "role": "Billing & Payment Systems Specialist",
+      "priority": 3,
+      "phase": "Phase 3",
+      "new": true
+    },
+    {
+      "id": 12,
+      "name": "analytics-agent",
+      "role": "Data Analytics & BI Specialist",
+      "priority": 4,
+      "phase": "Phase 4",
+      "new": true
+    },
+    {
+      "id": 13,
+      "name": "integration-agent",
+      "role": "API Integration & Webhook Specialist",
+      "priority": 3,
+      "phase": "Phase 3",
+      "new": true
+    }
+  ],
+  "coordination": {
+    "parallel_execution": ["database-agent", "security-agent"],
+    "sequential_dependencies": {
+      "api-agent": ["database-agent"],
+      "controller-agent": ["api-agent", "radius-agent"],
+      "billing-agent": ["api-agent", "database-agent"],
+      "performance-agent": ["database-agent", "api-agent"],
+      "analytics-agent": ["database-agent", "billing-agent"],
+      "frontend-agent": ["api-agent", "analytics-agent"],
+      "testing-agent": ["all-development-agents"],
+      "devops-agent": ["testing-agent"]
+    }
+  }
+}

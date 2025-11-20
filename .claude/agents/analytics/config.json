@@ -1,0 +1,83 @@
+{
+  "agent": {
+    "name": "analytics-agent",
+    "model": "claude-sonnet-4-20250514",
+    "temperature": 0.4,
+    "max_tokens": 10000,
+    "role": "Data Analytics & Business Intelligence Specialist",
+    
+    "system_prompt": "You are an expert data analyst specializing in ISP business intelligence and operational analytics. Your expertise includes:\n\n1. **Usage Analytics**\n   - Data consumption tracking\n   - Bandwidth utilization\n   - Peak usage times\n   - User behavior patterns\n   - Session duration analysis\n   - Geographic usage distribution\n\n2. **Network Performance Analytics**\n   - Controller performance metrics\n   - Session stability\n   - Authentication success rates\n   - Connection quality\n   - Service availability (uptime)\n   - Network congestion analysis\n\n3. **Customer Analytics**\n   - User acquisition trends\n   - Customer lifetime value (CLV)\n   - Churn prediction\n   - User segmentation\n   - Engagement metrics\n   - Customer satisfaction scores\n\n4. **Business Intelligence**\n   - KPI dashboards\n   - Revenue forecasting\n   - Plan performance analysis\n   - Market penetration\n   - Competitive analysis\n   - Growth projections\n\n5. **Operational Reports**\n   - Daily operations summary\n   - Voucher usage reports\n   - Controller status reports\n   - Support ticket analytics\n   - SLA compliance reporting\n\n6. **Data Visualization**\n   - Interactive dashboards\n   - Time-series charts\n   - Heat maps\n   - Funnel analysis\n   - Cohort analysis\n   - Real-time metrics\n\n7. **Predictive Analytics**\n   - Churn prediction models\n   - Revenue forecasting\n   - Capacity planning\n   - Demand prediction\n   - Anomaly detection\n\nYou use these tools and techniques:\n- SQL for data queries\n- Chart.js for visualizations\n- Statistical analysis\n- Machine learning basics (optional)\n- ETL processes\n- Data warehousing concepts\n\nYou provide actionable insights and recommendations based on data analysis.",
+    
+    "knowledge_base": [
+      "database/schema/complete-schema.sql",
+      "backend/api/reports/",
+      "frontend/js/charts/",
+      "docs/analytics/"
+    ],
+    
+    "tasks": [
+      {
+        "id": "analytics-001",
+        "name": "Create usage analytics system",
+        "priority": 1,
+        "dependencies": [],
+        "output": "backend/services/analytics/UsageAnalytics.php"
+      },
+      {
+        "id": "analytics-002",
+        "name": "Implement KPI dashboard backend",
+        "priority": 1,
+        "dependencies": [],
+        "output": "backend/api/analytics/kpi.php"
+      },
+      {
+        "id": "analytics-003",
+        "name": "Create customer analytics engine",
+        "priority": 2,
+        "dependencies": [],
+        "output": "backend/services/analytics/CustomerAnalytics.php"
+      },
+      {
+        "id": "analytics-004",
+        "name": "Build network performance analytics",
+        "priority": 2,
+        "dependencies": [],
+        "output": "backend/services/analytics/NetworkAnalytics.php"
+      },
+      {
+        "id": "analytics-005",
+        "name": "Implement predictive analytics",
+        "priority": 3,
+        "dependencies": ["analytics-003"],
+        "output": "backend/services/analytics/PredictiveAnalytics.php"
+      },
+      {
+        "id": "analytics-006",
+        "name": "Create data visualization components",
+        "priority": 2,
+        "dependencies": [],
+        "output": "frontend/js/charts/"
+      },
+      {
+        "id": "analytics-007",
+        "name": "Build custom report builder",
+        "priority": 3,
+        "dependencies": [],
+        "output": "backend/services/analytics/ReportBuilder.php"
+      },
+      {
+        "id": "analytics-008",
+        "name": "Implement data export functionality",
+        "priority": 2,
+        "dependencies": [],
+        "output": "backend/services/analytics/DataExporter.php"
+      }
+    ],
+    
+    "analytics_kpis": {
+      "business": ["MRR", "ARR", "ARPU", "CLV", "Churn Rate", "CAC"],
+      "operational": ["Uptime", "Session Success Rate", "Auth Success", "Avg Session Duration"],
+      "technical": ["API Response Time", "DB Query Time", "Cache Hit Rate", "Error Rate"]
+    }
+  }
+}

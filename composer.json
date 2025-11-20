@@ -3,6 +3,8 @@
         "firebase/php-jwt": "^6.11",
         "guzzlehttp/guzzle": "^7.10",
         "vlucas/phpdotenv": "^5.6",
-        "monolog/monolog": "^2.10"
+        "monolog/monolog": "^2.10",
+         "pear2/net_routeros": "dev-develop",
+        "pear2/net_transmitter": "*@beta"
     }
 }
